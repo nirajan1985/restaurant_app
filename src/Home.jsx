@@ -1,34 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import RestaurantCard from "./RestaurantCard";
+import { Link } from "react-router-dom";
+import useOnlineStatus from "./utils/useOnlineStatus";
+import useRestaurant from "./utils/useRestaurant";
 
 const Home = () => {
-  const [restaurants, setRestaurants] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredList, setFilteredList] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    const data = await fetch(
-      "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
-    const json = await data.json();
-    setRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilteredList(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-  };
+  const onlineStatus = useOnlineStatus();
+  const { restaurantList, filteredList, setFilteredList } = useRestaurant();
 
   const handleSearch = () => {
-    const filteredRestaurants = restaurants.filter((restaurant) =>
+    const filteredRestaurants = restaurantList?.filter((restaurant) =>
       restaurant?.info?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredList(filteredRestaurants);
   };
+
+  if (!onlineStatus) {
+    return (
+      <h1>
+        It seems like you are offline!! Please check your internet connection !
+      </h1>
+    );
+  }
+  if (!filteredList) {
+    return <div>Loading restaurants....</div>;
+  }
+
   return (
     <>
       <div style={{ marginBottom: "8px" }}>
@@ -46,14 +45,18 @@ const Home = () => {
           gap: "10px",
         }}
       >
-        {filteredList.map((restaurant) => (
-          <RestaurantCard
+        {filteredList?.map((restaurant) => (
+          <Link
+            to={"/restaurants/" + restaurant.info.id}
             key={restaurant.info.id}
-            name={restaurant.info.name}
-            rating={restaurant.info.avgRating}
-            costForTwo={restaurant.info.costForTwo}
-            cloudinaryImageId={restaurant.info.cloudinaryImageId}
-          />
+          >
+            <RestaurantCard
+              name={restaurant.info.name}
+              rating={restaurant.info.avgRating}
+              costForTwo={restaurant.info.costForTwo}
+              cloudinaryImageId={restaurant.info.cloudinaryImageId}
+            />
+          </Link>
         ))}
       </div>
     </>

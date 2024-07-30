@@ -1,22 +1,12 @@
-import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import useRestaurantMenu from "./utils/useRestaurantMenu";
 
 const RestaurantMenu = () => {
-  const [resinfo, setResInfo] = useState([]);
+  const { resId } = useParams();
 
-  useEffect(() => {
-    fetchMenu();
-  }, []);
+  const resinfo = useRestaurantMenu(resId);
 
-  const fetchMenu = async () => {
-    const data = await fetch(
-      "https://corsproxy.io/?https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.9715987&lng=77.5945627&restaurantId=405798&catalog_qa=undefined&submitAction=ENTER"
-    );
-    const json = await data.json();
-    setResInfo(json?.data);
-  };
-  console.log("resinfo", resinfo);
-
-  if (resinfo.length === 0) {
+  if (!resinfo) {
     return <div>Loading....</div>;
   }
   return (
@@ -26,16 +16,15 @@ const RestaurantMenu = () => {
       />
       <h1>{resinfo?.cards[2]?.card?.card?.info?.name}</h1>
       <h3>{resinfo?.cards[2]?.card?.card?.info?.cuisines.join(", ")}</h3>
-
-      {/* <ul>
-        {restaurantsMenu.map((resMenu) => (
-          <li key={resMenu.card.info.id}>{resMenu.card.info.name}</li>
-        ))}
-      </ul> */}
+      <h3>Restaurant Menu</h3>
+      <ol>
+        {resinfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card?.itemCards.map(
+          (resMenu) => (
+            <li key={resMenu.card.info.id}>{resMenu?.card?.info?.name}</li>
+          )
+        )}
+      </ol>
     </div>
   );
 };
 export default RestaurantMenu;
-
-/* json?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card
-        ?.card.itemCards */
