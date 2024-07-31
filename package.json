@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://nirajan1985.github.io/restaurant_app",
+  
   "scripts": {
     "dev": "vite",
     "build": "vite build",
