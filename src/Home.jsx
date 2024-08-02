@@ -30,21 +30,21 @@ const Home = () => {
 
   return (
     <>
-      <div style={{ marginBottom: "8px" }}>
+      <div className="p-4 m-4">
         <input
+          className="border border-black border-solid rounded pl-1"
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button onClick={handleSearch}>Search</button>
+        <button
+          onClick={handleSearch}
+          className="px-4 py-1 m-2 bg-blue-400 hover:bg-blue-500 rounded-lg"
+        >
+          Search
+        </button>
       </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "auto auto auto auto",
-          gap: "10px",
-        }}
-      >
+      <div className="flex flex-wrap justify-center">
         {filteredList?.map((restaurant) => (
           <Link
             to={"/restaurants/" + restaurant.info.id}

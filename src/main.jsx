@@ -7,6 +7,7 @@ import Contact from "./Contact.jsx";
 import About from "./About.jsx";
 import Offer from "./Offer.jsx";
 import RestaurantMenu from "./RestaurantMenu.jsx";
+import "./index.css";
 
 const Grocery = lazy(() => import("./Grocery.jsx"));
 
