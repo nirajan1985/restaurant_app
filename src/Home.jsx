@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { withDiscountLabel } from "./RestaurantCard";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "./utils/useOnlineStatus";
 import useRestaurant from "./utils/useRestaurant";
@@ -9,6 +9,8 @@ const Home = () => {
 
   const onlineStatus = useOnlineStatus();
   const { restaurantList, filteredList, setFilteredList } = useRestaurant();
+
+  //console.log(restaurantList);
 
   const handleSearch = () => {
     const filteredRestaurants = restaurantList?.filter((restaurant) =>
@@ -27,6 +29,8 @@ const Home = () => {
   if (!filteredList) {
     return <div>Loading restaurants....</div>;
   }
+
+  const RestaurantCardDiscounted = withDiscountLabel(RestaurantCard);
 
   return (
     <>
@@ -50,12 +54,24 @@ const Home = () => {
             to={"/restaurants/" + restaurant.info.id}
             key={restaurant.info.id}
           >
-            <RestaurantCard
-              name={restaurant.info.name}
-              rating={restaurant.info.avgRating}
-              costForTwo={restaurant.info.costForTwo}
-              cloudinaryImageId={restaurant.info.cloudinaryImageId}
-            />
+            {restaurant.info.aggregatedDiscountInfoV3 ? (
+              <RestaurantCardDiscounted
+                name={restaurant.info.name}
+                rating={restaurant.info.avgRating}
+                costForTwo={restaurant.info.costForTwo}
+                cloudinaryImageId={restaurant.info.cloudinaryImageId}
+                aggregatedDiscountInfoV3={
+                  restaurant.info.aggregatedDiscountInfoV3
+                }
+              />
+            ) : (
+              <RestaurantCard
+                name={restaurant.info.name}
+                rating={restaurant.info.avgRating}
+                costForTwo={restaurant.info.costForTwo}
+                cloudinaryImageId={restaurant.info.cloudinaryImageId}
+              />
+            )}
           </Link>
         ))}
       </div>

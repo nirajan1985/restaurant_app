@@ -14,4 +14,29 @@ const RestaurantCard = ({ name, rating, costForTwo, cloudinaryImageId }) => {
   );
 };
 
+// Higher order component
+// input - RestaurantCard => RestaurantCardImproved
+
+export const withDiscountLabel = (RestaurantCard) => {
+  return ({
+    name,
+    rating,
+    costForTwo,
+    cloudinaryImageId,
+    aggregatedDiscountInfoV3,
+  }) => {
+    return (
+      <div>
+        <label>{aggregatedDiscountInfoV3.header}</label>
+        <RestaurantCard
+          name={name}
+          rating={rating}
+          costForTwo={costForTwo}
+          cloudinaryImageId={cloudinaryImageId}
+        />
+      </div>
+    );
+  };
+};
+
 export default RestaurantCard;
