@@ -2,9 +2,13 @@ import { Link } from "react-router-dom";
 import useOnlineStatus from "./utils/useOnlineStatus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import UserContext from "./utils/UserContext";
 
 const Navbar = () => {
   const onlineStatus = useOnlineStatus();
+  const { loggedInUser } = useContext(UserContext);
+
   return (
     <nav className="flex justify-between items-center px-10 pt-1 pb-1 bg-sky-500/40 shadow-md w-[850px] md:w-[1050px] lg:w-full">
       <img
@@ -35,6 +39,7 @@ const Navbar = () => {
         </li>
       </ul>
       <FontAwesomeIcon icon={faBars} className="text-2xl md:invisible" />
+      <p>Logged in user : {loggedInUser}</p>
     </nav>
   );
 };

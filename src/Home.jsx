@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import RestaurantCard, { withDiscountLabel } from "./RestaurantCard";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "./utils/useOnlineStatus";
 import useRestaurant from "./utils/useRestaurant";
+import UserContext from "./utils/UserContext";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onlineStatus = useOnlineStatus();
   const { restaurantList, filteredList, setFilteredList } = useRestaurant();
+  const { loggedInUser, setUserName } = useContext(UserContext);
 
   //console.log(restaurantList);
 
@@ -47,11 +49,18 @@ const Home = () => {
         >
           Search
         </button>
+        <span className="ml-4">Change loggedIn user : </span>
+        <input
+          className="border border-black border-solid rounded pl-1"
+          type="text"
+          value={loggedInUser}
+          onChange={(e) => setUserName(e.target.value)}
+        />
       </div>
       <div className="flex flex-wrap justify-center">
         {filteredList?.map((restaurant) => (
           <Link
-            to={"/restaurants/" + restaurant.info.id}
+            to={`/restaurants/${restaurant.info.id}`}
             key={restaurant.info.id}
           >
             {restaurant.info.aggregatedDiscountInfoV3 ? (
