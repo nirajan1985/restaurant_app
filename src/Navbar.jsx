@@ -4,15 +4,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
 import UserContext from "./utils/UserContext";
+import logo from "./logo/logo.jpg";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const onlineStatus = useOnlineStatus();
   const { loggedInUser } = useContext(UserContext);
 
+  // Subscribing to store using selector
+
+  const cartItems = useSelector((store) => store.cart.items);
+
   return (
     <nav className="flex justify-between items-center px-10 pt-1 pb-1 bg-sky-500/40 shadow-md w-[850px] md:w-[1050px] lg:w-full">
       <img
-        src="logo.jpg"
+        src={logo}
         alt="logo"
         className="w-20 h-20 rounded-full object-cover mr-5 "
       />
@@ -39,6 +45,7 @@ const Navbar = () => {
         </li>
       </ul>
       <FontAwesomeIcon icon={faBars} className="text-2xl md:invisible" />
+      <p className="font-bold">Cart ({cartItems.length})</p>
       <p>Logged in user : {loggedInUser}</p>
     </nav>
   );
