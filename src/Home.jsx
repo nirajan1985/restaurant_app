@@ -64,22 +64,9 @@ const Home = () => {
             key={restaurant.info.id}
           >
             {restaurant.info.aggregatedDiscountInfoV3 ? (
-              <RestaurantCardDiscounted
-                name={restaurant.info.name}
-                rating={restaurant.info.avgRating}
-                costForTwo={restaurant.info.costForTwo}
-                cloudinaryImageId={restaurant.info.cloudinaryImageId}
-                aggregatedDiscountInfoV3={
-                  restaurant.info.aggregatedDiscountInfoV3
-                }
-              />
+              <RestaurantCardDiscounted resData={restaurant?.info} />
             ) : (
-              <RestaurantCard
-                name={restaurant.info.name}
-                rating={restaurant.info.avgRating}
-                costForTwo={restaurant.info.costForTwo}
-                cloudinaryImageId={restaurant.info.cloudinaryImageId}
-              />
+              <RestaurantCard resData={restaurant?.info} />
             )}
           </Link>
         ))}

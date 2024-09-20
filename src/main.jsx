@@ -8,6 +8,7 @@ import About from "./About.jsx";
 import Offer from "./Offer.jsx";
 import RestaurantMenu from "./RestaurantMenu.jsx";
 import "./index.css";
+import Cart from "./Cart.jsx";
 
 const Grocery = lazy(() => import("./Grocery.jsx"));
 
@@ -43,6 +44,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/restaurants/:resId",
         element: <RestaurantMenu />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
       },
     ],
   },

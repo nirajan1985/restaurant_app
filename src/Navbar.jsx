@@ -2,18 +2,20 @@ import { Link } from "react-router-dom";
 import useOnlineStatus from "./utils/useOnlineStatus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from "./utils/UserContext";
-import logo from "./logo/logo.jpg";
+import logo from "../src/assets/logo.jpg";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const onlineStatus = useOnlineStatus();
   const { loggedInUser } = useContext(UserContext);
+  const [isLogin, setIsLogin] = useState(true);
 
   // Subscribing to store using selector
 
   const cartItems = useSelector((store) => store.cart.items);
+  //console.log(cartItems);
 
   return (
     <nav className="flex justify-between items-center px-10 pt-1 pb-1 bg-sky-500/40 shadow-md w-[850px] md:w-[1050px] lg:w-full">
@@ -45,8 +47,18 @@ const Navbar = () => {
         </li>
       </ul>
       <FontAwesomeIcon icon={faBars} className="text-2xl md:invisible" />
-      <p className="font-bold">Cart ({cartItems.length})</p>
+      <Link to="/cart">
+        <p className="font-bold">Cart ({cartItems.length})</p>
+      </Link>
+
       <p>Logged in user : {loggedInUser}</p>
+
+      <button
+        className="px-4 py-1 m-2 bg-blue-400 hover:bg-blue-500 rounded-lg"
+        onClick={() => setIsLogin(!isLogin)}
+      >
+        {isLogin ? "Login" : "Logout"}
+      </button>
     </nav>
   );
 };
